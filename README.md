@@ -27,6 +27,8 @@ Example:
 - 42 School "philosophers" subject PDF
 - Github (various approaches, tests)
 - Leetcode (another approach)
+- https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3.html PTHREAD_MUTEX_INIT Always return 0
+- https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_mutexattr_destroy.html
 
 ## AI usage:
 - Copilot autocomplete - (quick code rewriting)

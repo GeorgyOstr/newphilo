@@ -56,18 +56,20 @@ static enum e_errors initialize_locks(t_sim *sim)
 {
     unsigned    i;
 
-    if (!pthread_mutex_init(&sim->write, NULL))
+    if (pthread_mutex_init(&sim->write, NULL))
         return (sim->error = MUTEX_INIT_ERROR);
-    if (!pthtread_mutex_init(&sim->write, NULL))
+    if (pthtread_mutex_init(&sim->write, NULL))
         return (pthread_mutex_destroy(&sim->write), sim->error = MUTEX_INIT_ERROR);
     i = 0;
     while (i < sim->args.number_of_philos)
     {
-        if (!pthtread_mutex_init(&sim->write, NULL))
+        if (pthtread_mutex_init(&sim->forks_locks[i], NULL))
         {
+            if (i != 0)
+                pthread_mutex_destroy(&sim->forks_locks[0]);
             while (i > 0)
                 pthread_mutex_destroy(&sim->forks_locks[i--]);
-            return (pthread_mutex_destroy(&sim->forks_locks[0]), pthread_mutex_destroy(&sim->write), pthread_mutex_destroy(&sim->finish), sim->error = MUTEX_INIT_ERROR);            
+            return (pthread_mutex_destroy(&sim->write), pthread_mutex_destroy(&sim->finish), sim->error = MUTEX_INIT_ERROR);            
         }
     }
     return (NO_ERROR);
