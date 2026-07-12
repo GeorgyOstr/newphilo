@@ -12,9 +12,9 @@
 
 #ifndef PHILO_H
 # define PHILO_H
-# include <stdbool.h>
 # include <limits.h>
 # include <pthread.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
@@ -22,9 +22,11 @@
 
 enum				e_errors
 {
+	NO_ERROR,
 	ARGUMENTS_ERROR,
 	ATOI_ERROR,
 	MALLOC_ERROR,
+	MUTEX_INIT_ERROR,
 	THREAD_ERROR,
 	GETTIME_ERROR
 };
@@ -41,11 +43,11 @@ enum				e_status
 
 typedef struct s_args
 {
-	size_t			number_of_philos;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			number_of_eat_to_finish;
+	unsigned int	number_of_philos;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
+	unsigned int	number_of_eat_to_finish;
 }					t_args;
 
 typedef struct s_philo
@@ -57,11 +59,11 @@ typedef struct s_philo
 	t_args			*args;
 	bool			*forks_states[2];
 	bool			*sim_finished;
-	size_t			*eat_enough_count;
-	size_t			philo_num;
-	size_t			eat_count;
-	timeval			last_ate_time;
-	timeval 		*sim_start;
+	unsigned int	*eat_enough_count;
+	unsigned int	philo_num;
+	unsigned int	eat_count;
+	struct timeval	last_ate_time;
+	struct timeval	*sim_start;
 }					t_philo;
 
 typedef struct s_sim
@@ -72,8 +74,20 @@ typedef struct s_sim
 	pthread_mutex_t	*finish;
 	bool			*forks_states;
 	bool			sim_finished;
-	timeval			sim_start;
-	size_t			eat_enough_count;
+	struct timeval	sim_start;
+	unsigned int	eat_enough_count;
+	t_args			args;
+	enum e_errors	error;
 }					t_sim;
+
+bool				readarg(char *s, unsigned int *arg);
+
+void	*ft_calloc(size_t nmemb, size_t size);
+void	ft_bzero(void *s, size_t n);
+struct	timeval add_timeval(struct timeval *t1, struct timeval *t2);
+void 	start(t_sim *sim);
+void clean(t_sim *sim);
+
+
 
 #endif
