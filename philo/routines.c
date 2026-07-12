@@ -80,3 +80,15 @@ void    release_fork(t_philo *philo, unsigned num)
     *philo->forks_states[num] = false;
     pthread_mutex_unlock(philo->forks_locks[num]);
 }
+
+int	busy_sleep(t_philo *philo, unsigned duration)
+{
+	struct timeval     start;
+
+	if (gettimeofday(&start, NULL))
+        return (false);
+	while (get_time() - start < duration)
+		if (check_dead(philo))
+			return (1);
+	return (0);
+}
