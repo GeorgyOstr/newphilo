@@ -20,6 +20,8 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+# define USLEEP_TIME	10
+
 enum				e_errors
 {
 	NO_ERROR,
@@ -64,6 +66,7 @@ typedef struct s_philo
 	unsigned int	eat_count;
 	struct timeval	last_ate_time;
 	struct timeval	*sim_start;
+	enum e_errors	*error;
 }					t_philo;
 
 typedef struct s_sim
@@ -86,7 +89,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
 struct	timeval add_timeval(struct timeval *t1, struct timeval *t2);
 void 	start(t_sim *sim);
-void clean(t_sim *sim);
+void 	clean(t_sim *sim);
 void    philo_routine(void *arg);
 
 

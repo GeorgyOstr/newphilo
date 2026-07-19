@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     if (initialize(&sim))
         return (sim.error);
     start(&sim);
-    free_all(&sim);
+    clean(&sim);
     return (sim.error);
 }
 

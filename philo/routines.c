@@ -8,10 +8,6 @@ void    philo_routine(void *arg)
     
     while (1)
     {
-        pthread_mutex_lock(philo->finish);
-        if (*philo->sim_finished)
-            return (pthread_mutex_unlock(philo->finish), arg);
-        pthread_mutex_unlock(philo->finish);
         if (think(philo))
             break;
         if (eat(philo))
@@ -24,7 +20,7 @@ void    philo_routine(void *arg)
     return (arg);
 }
 
-bool think(t_philo *philo)
+static bool think(t_philo *philo)
 {
     if (print_status(philo, THINKING))
 		return (true);
@@ -37,16 +33,16 @@ bool think(t_philo *philo)
 		if (check_dead(philo))
 			return (true);
 	if (print_status(philo, TAKEN_FORK))
-		return (release_fork(philo, 0), true);
+		return (true);
 	while (grabbing_fork(philo, 1))
 		if (check_dead(philo))
-			return (release_fork(philo, 0), true);
+			return (true);
 	if (print_status(philo, TAKEN_FORK))
-		return (release_fork(philo, 0), release_fork(philo, 1), true);
+		return (true);
 	return (false);
 }
 
-bool eat(t_philo *philo)
+static bool eat(t_philo *philo)
 {
     if (print_status(philo, EATING))
 		return (true);
@@ -60,11 +56,11 @@ bool eat(t_philo *philo)
 		pthread_mutex_unlock(philo->finish);
 	}
 	if (busy_sleep(philo, philo->args->time_to_eat))
-		return (release_fork(philo, 0), release_fork(philo, 1), 1);
+		return (true);
 	return (release_fork(philo, 0), release_fork(philo, 1), 0);
 }
 
-bool    grabbing_fork(t_philo *philo, int num)
+static bool    grabbing_fork(t_philo *philo, int num)
 {
 	pthread_mutex_lock(philo->forks_locks[num]);
 	if (*philo->forks_states[num] == true)
@@ -74,21 +70,32 @@ bool    grabbing_fork(t_philo *philo, int num)
 	return (false);
 }
 
-void    release_fork(t_philo *philo, unsigned num)
+static void    release_fork(t_philo *philo, unsigned num)
 {
     pthread_mutex_lock(philo->forks_locks[num]);
     *philo->forks_states[num] = false;
     pthread_mutex_unlock(philo->forks_locks[num]);
 }
 
-int	busy_sleep(t_philo *philo, unsigned duration)
+bool	busy_sleep(t_philo *philo, unsigned duration)
 {
-	struct timeval     start;
+	struct timeval	end;
+	struct timeval	dead;
+	struct timeval	curr;
 
-	if (gettimeofday(&start, NULL))
-        return (false);
-	while (get_time() - start < duration)
-		if (check_dead(philo))
-			return (1);
-	return (0);
+	if (gettimeofday(&end, NULL))
+        return (philo->error = GETTIME_ERROR, true);
+	time_inc(&end, duration);
+	time_copy(&dead, &philo->last_ate_time);
+	time_inc(&dead, philo->args->time_to_die);
+	while (true)
+	{
+		if (gettimeofday(&curr, NULL))
+        	return (philo->error = GETTIME_ERROR, true);
+		if (first_more(curr, dead))
+			return (true);
+		if (first_more(curr, end))
+			return (false);
+	}
+	return (false);
 }
