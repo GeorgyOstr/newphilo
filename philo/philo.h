@@ -90,7 +90,8 @@ void	ft_bzero(void *s, size_t n);
 struct	timeval add_timeval(struct timeval *t1, struct timeval *t2);
 void 	start(t_sim *sim);
 void 	clean(t_sim *sim);
-void    philo_routine(void *arg);
+void    *philo_routine(void *arg);
+bool 	print_status(t_philo *philo, enum e_status stat);
 
 
 

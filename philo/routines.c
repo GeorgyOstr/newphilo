@@ -1,6 +1,12 @@
 #include "philo.h"
 
-void    philo_routine(void *arg)
+
+static bool think(t_philo *philo);
+static bool eat(t_philo *philo);
+static bool    grabbing_fork(t_philo *philo, int num);
+static void    release_fork(t_philo *philo, unsigned num);
+
+void    *philo_routine(void *arg)
 {
     t_philo *philo;
     
