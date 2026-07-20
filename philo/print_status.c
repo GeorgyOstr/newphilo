@@ -1,23 +1,24 @@
 #include "philo.h"
 
-bool print_status(t_philo *philo, enum e_status stat)
+bool	print_status(t_philo *philo, enum e_status stat)
 {
-    struct timeval curr;
+	struct timeval curr;
 
-    pthread_mutex_lock(philo->finish);
-    pthread_mutex_lock(philo->write);
-    if (!gettimeofday(&curr, NULL))
-        return (pthread_mutex_unlock(philo->write),pthread_mutex_unlock(philo->finish), true);
-    printf("%ld.%06ld %u", curr.tv_sec, curr.tv_usec, philo->philo_num);
-    if (stat == SLEEPING)
-        printf("is sleeping");
-    else if (stat == EATING)
-        printf("is eating");
-    else if (stat == THINKING)
-        printf("is thinking");
-    else if (stat == TAKEN_FORK)
-        printf("has taken a fork");
-    pthread_mutex_unlock(philo->write);
-    pthread_mutex_unlock(philo->finish);
-    return (false);
+	pthread_mutex_lock(philo->finish);
+	pthread_mutex_lock(philo->write);
+	if (!gettimeofday(&curr, NULL))
+		return (pthread_mutex_unlock(philo->write),
+			pthread_mutex_unlock(philo->finish), true);
+	printf("%ld.%06ld %u", curr.tv_sec, curr.tv_usec, philo->philo_num);
+	if (stat == SLEEPING)
+		printf("is sleeping");
+	else if (stat == EATING)
+		printf("is eating");
+	else if (stat == THINKING)
+		printf("is thinking");
+	else if (stat == TAKEN_FORK)
+		printf("has taken a fork");
+	pthread_mutex_unlock(philo->write);
+	pthread_mutex_unlock(philo->finish);
+	return (false);
 }

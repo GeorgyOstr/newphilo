@@ -1,41 +1,39 @@
 #include "philo.h"
 
+static bool	think(t_philo *philo);
+static bool	eat(t_philo *philo);
+static bool	grabbing_fork(t_philo *philo, int num);
+static void	release_fork(t_philo *philo, unsigned num);
 
-static bool think(t_philo *philo);
-static bool eat(t_philo *philo);
-static bool    grabbing_fork(t_philo *philo, int num);
-static void    release_fork(t_philo *philo, unsigned num);
-
-void    *philo_routine(void *arg)
+void	*philo_routine(void *arg)
 {
-    t_philo *philo;
-    
-    philo = (t_philo *)arg;
-    
-    while (1)
-    {
-        if (think(philo))
-            break;
-        if (eat(philo))
-            break;
-        if (print_status(philo, SLEEPING))
-            break;
-        if (busy_sleep(philo, &philo->args->time_to_sleep))
-            break;
-    }
-    return (arg);
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (1)
+	{
+		if (think(philo))
+			break ;
+		if (eat(philo))
+			break ;
+		if (print_status(philo, SLEEPING))
+			break ;
+		if (busy_sleep(philo, &philo->args->time_to_sleep))
+			break ;
+	}
+	return (arg);
 }
 
-static bool think(t_philo *philo)
+static bool	think(t_philo *philo)
 {
-    if (print_status(philo, THINKING))
+	if (print_status(philo, THINKING))
 		return (true);
-    if (philo->philo_num % 2 == 0 && philo->eat_count == 0)
+	if (philo->philo_num % 2 == 0 && philo->eat_count == 0)
 	{
 		if (busy_sleep(philo, &philo->args->time_to_eat))
 			return (true);
 	}
-    while (grabbing_fork(philo, 0))
+	while (grabbing_fork(philo, 0))
 		if (check_dead(philo))
 			return (true);
 	if (print_status(philo, TAKEN_FORK))
@@ -48,9 +46,9 @@ static bool think(t_philo *philo)
 	return (false);
 }
 
-static bool eat(t_philo *philo)
+static bool	eat(t_philo *philo)
 {
-    if (print_status(philo, EATING))
+	if (print_status(philo, EATING))
 		return (true);
 	if (philo->eat_count == philo->args->number_of_eat_to_finish)
 	{
@@ -66,7 +64,7 @@ static bool eat(t_philo *philo)
 	return (release_fork(philo, 0), release_fork(philo, 1), 0);
 }
 
-static bool    grabbing_fork(t_philo *philo, int num)
+static bool	grabbing_fork(t_philo *philo, int num)
 {
 	pthread_mutex_lock(philo->forks_locks[num]);
 	if (*philo->forks_states[num] == true)
@@ -76,9 +74,9 @@ static bool    grabbing_fork(t_philo *philo, int num)
 	return (false);
 }
 
-static void    release_fork(t_philo *philo, unsigned num)
+static void	release_fork(t_philo *philo, unsigned num)
 {
-    pthread_mutex_lock(philo->forks_locks[num]);
-    *philo->forks_states[num] = false;
-    pthread_mutex_unlock(philo->forks_locks[num]);
+	pthread_mutex_lock(philo->forks_locks[num]);
+	*philo->forks_states[num] = false;
+	pthread_mutex_unlock(philo->forks_locks[num]);
 }

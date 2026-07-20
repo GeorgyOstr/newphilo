@@ -20,8 +20,8 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-# define USLEEP_TIME	10
-# define SIM_DELAY		500000
+# define USLEEP_TIME 10
+# define SIM_DELAY 500000
 
 enum				e_errors
 {
@@ -87,18 +87,17 @@ typedef struct s_sim
 bool				readarg(char *s, unsigned int *arg);
 bool				readtime(char *s, struct timeval *arg);
 
-void	*ft_calloc(size_t nmemb, size_t size);
-void	ft_bzero(void *s, size_t n);
-void 	start(t_sim *sim);
-void 	clean(t_sim *sim);
-void    *philo_routine(void *arg);
-bool 	print_status(t_philo *philo, enum e_status stat);
-struct timeval *time_add(struct timeval *t1, struct timeval *t2);
-void    unsigned_to_time(struct timeval *t, unsigned int);
-void    time_copy(struct timeval *t1, struct timeval *t2);
-bool time_more_eq(struct timeval *m, struct timeval *l);
-bool	busy_sleep(t_philo *philo, struct timeval *duration);
-bool    check_dead(t_philo *philo);
-
+void				*ft_calloc(size_t nmemb, size_t size);
+void				ft_bzero(void *s, size_t n);
+void				start(t_sim *sim);
+void				clean(t_sim *sim);
+void				*philo_routine(void *arg);
+bool				print_status(t_philo *philo, enum e_status stat);
+struct timeval		*time_add(struct timeval *t1, struct timeval *t2);
+void				unsigned_to_time(struct timeval *t, unsigned int);
+void				time_copy(struct timeval *t1, struct timeval *t2);
+bool				time_more_eq(struct timeval *m, struct timeval *l);
+bool				busy_sleep(t_philo *philo, struct timeval *duration);
+bool				check_dead(t_philo *philo);
 
 #endif
