@@ -19,7 +19,13 @@ SRCS := main.c \
 	simulation.c \
 	minift.c \
 	routines.c \
-	time.c
+	busy_sleep.c \
+	check_dead.c \
+	print_status.c \
+	readtime.c \
+	time.c \
+	readarg.c
+
 
 OBJS := $(SRCS:.c=.o)
 DEPS := $(OBJS:.o=.d)

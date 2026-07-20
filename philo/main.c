@@ -26,9 +26,9 @@ static enum e_errors    parse_input(int argc, char **argv, t_sim *sim)
 {
     sim->args.number_of_eat_to_finish = 0;
     if (readarg(argv[1], &sim->args.number_of_philos) 
-        || readarg(argv[2], &sim->args.time_to_die)
-        || readarg(argv[3], &sim->args.time_to_eat)
-        || readarg(argv[4], &sim->args.time_to_sleep)
+        || readtime(argv[2], &sim->args.time_to_die)
+        || readtime(argv[3], &sim->args.time_to_eat)
+        || readtime(argv[4], &sim->args.time_to_sleep)
         || (argc == 6 && readarg(argv[5], &sim->args.number_of_eat_to_finish))
     )
         sim->error = ATOI_ERROR;
@@ -91,7 +91,7 @@ static void initialize_philo(t_philo *philo, t_sim *sim, unsigned num)
     philo->philo_num = num + 1;
     philo->sim_finished = &sim->sim_finished;
     philo->sim_start = &sim->sim_start;
-    philo->last_ate_time = sim->sim_start;
+    philo->death_time = sim->sim_start;
     philo->forks_states[0] = &sim->forks_states[num + 1];
     philo->forks_states[1] = &sim->forks_states[(num + 2) % sim->args.number_of_philos];
     philo->forks_locks[0] = &sim->forks_locks[num + 1];

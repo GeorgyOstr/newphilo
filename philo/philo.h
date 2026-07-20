@@ -21,6 +21,7 @@
 # include <unistd.h>
 
 # define USLEEP_TIME	10
+# define SIM_DELAY		500000
 
 enum				e_errors
 {
@@ -46,9 +47,9 @@ enum				e_status
 typedef struct s_args
 {
 	unsigned int	number_of_philos;
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
+	struct timeval	time_to_die;
+	struct timeval	time_to_eat;
+	struct timeval	time_to_sleep;
 	unsigned int	number_of_eat_to_finish;
 }					t_args;
 
@@ -64,7 +65,7 @@ typedef struct s_philo
 	unsigned int	*eat_enough_count;
 	unsigned int	philo_num;
 	unsigned int	eat_count;
-	struct timeval	last_ate_time;
+	struct timeval	death_time;
 	struct timeval	*sim_start;
 	enum e_errors	*error;
 }					t_philo;
@@ -84,16 +85,21 @@ typedef struct s_sim
 }					t_sim;
 
 bool				readarg(char *s, unsigned int *arg);
+bool				readtime(char *s, struct timeval *arg);
 
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
-struct	timeval add_timeval(struct timeval *t1, struct timeval *t2);
 void 	start(t_sim *sim);
 void 	clean(t_sim *sim);
 void    *philo_routine(void *arg);
 bool 	print_status(t_philo *philo, enum e_status stat);
-
-
+struct timeval time_add(struct timeval *t1, struct timeval *t2);
+void    unsigned_to_time(struct timeval *t, unsigned int);
+void    time_copy(struct timeval *t1, struct timeval *t2);
+struct timeval time_inc(struct timeval *t1, struct timeval *t2);
+bool time_more_eq(struct timeval *m, struct timeval *l);
+bool	busy_sleep(t_philo *philo, struct timeval *duration);
+bool    check_dead(t_philo *philo);
 
 
 #endif

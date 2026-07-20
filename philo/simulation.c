@@ -1,6 +1,7 @@
 #include "philo.h"
 
 static void threads(t_sim *sim);
+static void set_start_time(t_sim *sim);
 
 
 void start(t_sim *sim)
@@ -10,7 +11,6 @@ void start(t_sim *sim)
         sim->error = GETTIME_ERROR;
         return ;
     }
-    sim->sim_start = add_timeval(&sim->sim_start, &(struct timeval){0, 500000});
     threads(sim);
 }
 
@@ -32,7 +32,22 @@ static void threads(t_sim *sim)
         }
     }
     i--;
+    set_start_time(sim);
     while (i > 0)
         pthread_join(sim->philos[i--].thread_id, NULL);
 } 
+
+static void set_start_time(t_sim *sim)
+{
+    unsigned i;
+    sim->sim_start = time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
+    
+    i = 0;
+    while(i < sim->args.number_of_philos)
+    {
+        time_copy(&sim->philos[i].death_time, &sim->sim_start);
+        time_inc(&sim->philos[i].death_time, &sim->args.time_to_die);
+        i++;
+    }
+}
 
