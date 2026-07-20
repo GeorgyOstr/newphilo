@@ -14,7 +14,7 @@
 
 bool	print_status(t_philo *philo, enum e_status stat)
 {
-	struct timeval curr;
+	struct timeval	curr;
 
 	pthread_mutex_lock(philo->finish);
 	pthread_mutex_lock(philo->write);

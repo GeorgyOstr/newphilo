@@ -21,7 +21,7 @@ struct timeval	*time_add(struct timeval *t1, struct timeval *t2)
 	return (t1);
 }
 
-void	unsigned_to_time(struct timeval *t, unsigned v)
+void	unsigned_to_time(struct timeval *t, unsigned int v)
 {
 	t->tv_sec = v / 1000;
 	t->tv_sec = (v % 1000) * 1000;

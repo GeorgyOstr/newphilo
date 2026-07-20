@@ -15,7 +15,7 @@
 static bool	think(t_philo *philo);
 static bool	eat(t_philo *philo);
 static bool	grabbing_fork(t_philo *philo, int num);
-static void	release_fork(t_philo *philo, unsigned num);
+static void	release_fork(t_philo *philo, unsigned int num);
 
 void	*philo_routine(void *arg)
 {
@@ -86,7 +86,7 @@ static bool	grabbing_fork(t_philo *philo, int num)
 	return (false);
 }
 
-static void	release_fork(t_philo *philo, unsigned num)
+static void	release_fork(t_philo *philo, unsigned int num)
 {
 	pthread_mutex_lock(philo->forks_locks[num]);
 	*philo->forks_states[num] = false;

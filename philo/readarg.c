@@ -14,7 +14,7 @@
 
 bool	readarg(char *s, unsigned int *arg)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = 0;
 	while (s[i])

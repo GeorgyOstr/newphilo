@@ -14,7 +14,7 @@
 
 bool	check_dead(t_philo *philo)
 {
-	struct timeval curr;
+	struct timeval	curr;
 
 	if (gettimeofday(&curr, NULL))
 	{
@@ -23,6 +23,5 @@ bool	check_dead(t_philo *philo)
 	}
 	if (time_more_eq(&curr, &philo->death_time))
 		return (true);
-
 	return (false);
 }

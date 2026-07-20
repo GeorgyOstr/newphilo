@@ -14,7 +14,7 @@
 
 void	clean(t_sim *sim)
 {
-	unsigned i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < sim->args.number_of_philos)

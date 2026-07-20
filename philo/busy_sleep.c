@@ -14,8 +14,8 @@
 
 bool	busy_sleep(t_philo *philo, struct timeval *duration)
 {
-	struct timeval end;
-	struct timeval curr;
+	struct timeval	end;
+	struct timeval	curr;
 
 	if (gettimeofday(&end, NULL))
 		return (*philo->error = GETTIME_ERROR, true);

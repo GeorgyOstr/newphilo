@@ -16,7 +16,7 @@ static enum e_errors	parse_input(int argc, char **argv, t_sim *sim);
 static enum e_errors	initialize(t_sim *sim);
 static enum e_errors	initialize_locks(t_sim *sim);
 static void				initialize_philo(t_philo *philo, t_sim *sim,
-							unsigned num);
+							unsigned int num);
 
 int	main(int argc, char **argv)
 {
@@ -47,7 +47,7 @@ static enum e_errors	parse_input(int argc, char **argv, t_sim *sim)
 
 static enum e_errors	initialize(t_sim *sim)
 {
-	unsigned	i;
+	unsigned int	i;
 
 	sim->philos = ft_calloc(sim->args.number_of_philos, sizeof(*sim->philos));
 	sim->forks_locks = ft_calloc(sim->args.number_of_philos,
@@ -72,7 +72,7 @@ static enum e_errors	initialize(t_sim *sim)
 
 static enum e_errors	initialize_locks(t_sim *sim)
 {
-	unsigned	i;
+	unsigned int	i;
 
 	if (pthread_mutex_init(sim->write, NULL))
 		return (sim->error = MUTEX_INIT_ERROR);
@@ -96,7 +96,7 @@ static enum e_errors	initialize_locks(t_sim *sim)
 	return (NO_ERROR);
 }
 
-static void	initialize_philo(t_philo *philo, t_sim *sim, unsigned num)
+static void	initialize_philo(t_philo *philo, t_sim *sim, unsigned int num)
 {
 	philo->args = &sim->args;
 	philo->eat_count = 0;

@@ -27,7 +27,7 @@ void	start(t_sim *sim)
 
 static void	threads(t_sim *sim)
 {
-	unsigned	i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < sim->args.number_of_philos)
@@ -51,7 +51,7 @@ static void	threads(t_sim *sim)
 
 static void	set_start_time(t_sim *sim)
 {
-	unsigned	i;
+	unsigned int	i;
 
 	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
 	i = 0;

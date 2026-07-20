@@ -14,7 +14,7 @@
 
 bool	readtime(char *s, struct timeval *arg)
 {
-	unsigned	val;
+	unsigned int	val;
 
 	if (readarg(s, &val))
 		return (true);
