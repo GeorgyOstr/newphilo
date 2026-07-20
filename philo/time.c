@@ -1,22 +1,23 @@
 #include "philo.h"
 
-struct timeval time_add(struct timeval *t1, struct timeval *t2)
+//Not handling overflow
+struct timeval *time_add(struct timeval *t1, struct timeval *t2)
 {
-    return (*t1);
+    t1->tv_sec = (unsigned)t1->tv_sec + (unsigned)t2->tv_sec + ((unsigned)t1->tv_usec + (unsigned)t2->tv_usec)/1000000;
+    t1->tv_usec = ((unsigned)t1->tv_usec + (unsigned)t2->tv_usec) % 1000000;
+    return (t1);
 }
 
-void    unsigned_to_time(struct timeval *t, unsigned int)
+void    unsigned_to_time(struct timeval *t, unsigned v)
 {
-
+    t->tv_sec = v / 1000;
+    t->tv_sec = (v % 1000) * 1000;
 }
 
 void    time_copy(struct timeval *t1, struct timeval *t2)
 {
-
-}
-struct timeval time_inc(struct timeval *t1, struct timeval *t2)
-{
-
+    t1->tv_sec = t2->tv_sec;
+    t1->tv_usec = t2->tv_usec;
 }
 
 bool time_more_eq(struct timeval *m, struct timeval *l)

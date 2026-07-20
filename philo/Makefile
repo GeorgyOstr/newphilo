@@ -16,16 +16,16 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror -Wconversion -Wpedantic
 SRCS := main.c \
 	clean.c \
+	readarg.c \
+	readtime.c \
 	simulation.c \
 	minift.c \
 	routines.c \
 	busy_sleep.c \
 	check_dead.c \
 	print_status.c \
-	readtime.c \
-	time.c \
-	readarg.c
-
+	time.c
+	
 
 OBJS := $(SRCS:.c=.o)
 DEPS := $(OBJS:.o=.d)

@@ -40,13 +40,14 @@ static void threads(t_sim *sim)
 static void set_start_time(t_sim *sim)
 {
     unsigned i;
-    sim->sim_start = time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
+
+    time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
     
     i = 0;
     while(i < sim->args.number_of_philos)
     {
         time_copy(&sim->philos[i].death_time, &sim->sim_start);
-        time_inc(&sim->philos[i].death_time, &sim->args.time_to_die);
+        time_add(&sim->philos[i].death_time, &sim->args.time_to_die);
         i++;
     }
 }

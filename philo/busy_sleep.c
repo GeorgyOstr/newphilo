@@ -7,7 +7,7 @@ bool	busy_sleep(t_philo *philo, struct timeval *duration)
 
 	if (gettimeofday(&end, NULL))
         return (*philo->error = GETTIME_ERROR, true);
-	time_inc(&end, duration);
+	time_add(&end, duration);
 	while (true)
 	{
 		if (gettimeofday(&curr, NULL))
