@@ -18,10 +18,10 @@ bool	print_status(t_philo *philo, enum e_status stat)
 
 	pthread_mutex_lock(philo->finish);
 	pthread_mutex_lock(philo->write);
-	if (!gettimeofday(&curr, NULL))
+	if (gettimeofday(&curr, NULL))
 		return (pthread_mutex_unlock(philo->write),
 			pthread_mutex_unlock(philo->finish), true);
-	printf("%ld.%06ld %u", curr.tv_sec, curr.tv_usec, philo->philo_num);
+	printf("%ld.%06ld %u ", curr.tv_sec, curr.tv_usec, philo->philo_num);
 	if (stat == SLEEPING)
 		printf("is sleeping");
 	else if (stat == EATING)
@@ -30,6 +30,7 @@ bool	print_status(t_philo *philo, enum e_status stat)
 		printf("is thinking");
 	else if (stat == TAKEN_FORK)
 		printf("has taken a fork");
+	printf("\n");
 	pthread_mutex_unlock(philo->write);
 	pthread_mutex_unlock(philo->finish);
 	return (false);

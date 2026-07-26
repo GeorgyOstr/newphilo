@@ -27,7 +27,7 @@ bool	readarg(char *s, unsigned int *arg)
 		*arg += (unsigned int)(s[i] - '0');
 		i++;
 	}
-	if (arg == 0)
+	if (*arg == 0)
 		return (true);
 	return (false);
 }

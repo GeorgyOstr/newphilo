@@ -113,19 +113,19 @@ static void	initialize_philo(t_philo *philo, t_sim *sim, unsigned int num)
 	philo->sim_finished = &sim->sim_finished;
 	philo->sim_start = &sim->sim_start;
 	philo->death_time = sim->sim_start;
-	philo->forks_states[0] = &sim->forks_states[num + 1];
-	philo->forks_states[1] = &sim->forks_states[(num + 2)
+	philo->forks_states[0] = &sim->forks_states[num];
+	philo->forks_states[1] = &sim->forks_states[(num + 1)
 		% sim->args.number_of_philos];
-	philo->forks_locks[0] = &sim->forks_locks[num + 1];
-	philo->forks_locks[1] = &sim->forks_locks[(num + 2)
+	philo->forks_locks[0] = &sim->forks_locks[num];
+	philo->forks_locks[1] = &sim->forks_locks[(num + 1)
 		% sim->args.number_of_philos];
 	if (num % 2 == 1)
 	{
-		philo->forks_states[1] = &sim->forks_states[num + 1];
-		philo->forks_states[0] = &sim->forks_states[(num + 2)
+		philo->forks_states[1] = &sim->forks_states[num];
+		philo->forks_states[0] = &sim->forks_states[(num + 1)
 			% sim->args.number_of_philos];
-		philo->forks_locks[1] = &sim->forks_locks[num + 1];
-		philo->forks_locks[0] = &sim->forks_locks[(num + 2)
+		philo->forks_locks[1] = &sim->forks_locks[num];
+		philo->forks_locks[0] = &sim->forks_locks[(num + 1)
 			% sim->args.number_of_philos];
 	}
 }
