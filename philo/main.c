@@ -21,8 +21,12 @@ static void				initialize_philo(t_philo *philo, t_sim *sim,
 int	main(int argc, char **argv)
 {
 	t_sim	sim;
+	pthread_mutex_t	write;
+	pthread_mutex_t finish;
 
 	ft_bzero(&sim, sizeof(sim));
+	sim.write = &write;
+	sim.finish = &finish;
 	if (argc != 5 && argc != 6)
 		return (ARGUMENTS_ERROR);
 	if (parse_input(argc, argv, &sim))
@@ -62,6 +66,7 @@ static enum e_errors	initialize(t_sim *sim)
 	if (initialize_locks(sim))
 		return (free(sim->philos), free(sim->forks_locks),
 			free(sim->forks_states), sim->error = MALLOC_ERROR);
+	i = 0;
 	while (i < sim->args.number_of_philos)
 	{
 		initialize_philo(&sim->philos[i], sim, i);
@@ -76,7 +81,7 @@ static enum e_errors	initialize_locks(t_sim *sim)
 
 	if (pthread_mutex_init(sim->write, NULL))
 		return (sim->error = MUTEX_INIT_ERROR);
-	if (pthread_mutex_init(sim->write, NULL))
+	if (pthread_mutex_init(sim->finish, NULL))
 		return (pthread_mutex_destroy(sim->write),
 			sim->error = MUTEX_INIT_ERROR);
 	i = 0;
@@ -92,6 +97,7 @@ static enum e_errors	initialize_locks(t_sim *sim)
 				pthread_mutex_destroy(sim->finish),
 				sim->error = MUTEX_INIT_ERROR);
 		}
+		i++;
 	}
 	return (NO_ERROR);
 }

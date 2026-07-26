@@ -17,6 +17,7 @@ bool	readarg(char *s, unsigned int *arg)
 	unsigned int	i;
 
 	i = 0;
+	*arg = 0;
 	while (s[i])
 	{
 		if (!('0' <= s[i] && s[i] <= '9') || UINT_MAX / 10 < *arg

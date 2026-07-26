@@ -42,11 +42,12 @@ static void	threads(t_sim *sim)
 			i++;
 			break ;
 		}
+		i++;
 	}
-	i--;
+	i = 0;
 	set_start_time(sim);
-	while (i > 0)
-		pthread_join(sim->philos[i--].thread_id, NULL);
+	while (i < sim->args.number_of_philos)
+		pthread_join(sim->philos[i++].thread_id, NULL);
 }
 
 static void	set_start_time(t_sim *sim)

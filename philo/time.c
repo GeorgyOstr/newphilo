@@ -24,7 +24,7 @@ struct timeval	*time_add(struct timeval *t1, struct timeval *t2)
 void	unsigned_to_time(struct timeval *t, unsigned int v)
 {
 	t->tv_sec = v / 1000;
-	t->tv_sec = (v % 1000) * 1000;
+	t->tv_usec = (v % 1000) * 1000;
 }
 
 void	time_copy(struct timeval *t1, struct timeval *t2)
