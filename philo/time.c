@@ -21,6 +21,21 @@ struct timeval	*time_add(struct timeval *t1, struct timeval *t2)
 	return (t1);
 }
 
+struct timeval	*time_sub(struct timeval *t1, struct timeval *t2)
+{
+	if ((t1->tv_sec < t2->tv_sec) || (t1->tv_sec == t2->tv_sec && t1->tv_usec < t2->tv_usec))
+		return (NULL);
+	t1->tv_sec = (unsigned)t1->tv_sec - (unsigned)t2->tv_sec;
+	if (t1->tv_usec >= t2->tv_usec)
+		t1->tv_usec = (unsigned)t1->tv_usec - (unsigned)t2->tv_usec;
+	else
+	{
+		t1->tv_usec = 1000000 + (unsigned)t1->tv_usec - (unsigned)t2->tv_usec;
+		t1->tv_sec--;	
+	}
+	return (t1);
+}
+
 void	unsigned_to_time(struct timeval *t, unsigned int v)
 {
 	t->tv_sec = v / 1000;

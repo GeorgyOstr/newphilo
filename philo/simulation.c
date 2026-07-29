@@ -13,7 +13,6 @@
 #include "philo.h"
 
 static void	threads(t_sim *sim);
-static void	set_start_time(t_sim *sim);
 
 void	start(t_sim *sim)
 {
@@ -30,6 +29,7 @@ static void	threads(t_sim *sim)
 	unsigned int	i;
 
 	i = 0;
+	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
 	while (i < sim->args.number_of_philos)
 	{
 		if (pthread_create(&sim->philos[i].thread_id, NULL, &philo_routine,
@@ -39,27 +39,20 @@ static void	threads(t_sim *sim)
 			sim->sim_finished = true;
 			sim->error = THREAD_ERROR;
 			pthread_mutex_unlock(sim->finish);
-			i++;
 			break ;
 		}
 		i++;
 	}
 	i = 0;
-	set_start_time(sim);
-	while (i < sim->args.number_of_philos)
-		pthread_join(sim->philos[i++].thread_id, NULL);
-}
-
-static void	set_start_time(t_sim *sim)
-{
-	unsigned int	i;
-
-	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
-	i = 0;
 	while (i < sim->args.number_of_philos)
 	{
-		time_copy(&sim->philos[i].death_time, &sim->sim_start);
-		time_add(&sim->philos[i].death_time, &sim->args.time_to_die);
-		i++;
+		if (pthread_join(sim->philos[i++].thread_id, NULL))
+		{
+			pthread_mutex_lock(sim->finish);
+			sim->sim_finished = true;
+			sim->error = THREAD_ERROR;
+			pthread_mutex_unlock(sim->finish);
+			break ;
+		}
 	}
 }

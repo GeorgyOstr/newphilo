@@ -20,9 +20,17 @@ static void	release_fork(t_philo *philo, unsigned int num);
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
+	struct timeval	curr;
 
 	philo = (t_philo *)arg;
-	while (1)
+	while(!*philo->sim_finished)
+	{
+		if (gettimeofday(&curr, NULL))
+			return (*philo->error = GETTIME_ERROR, arg);
+		if (time_more_eq(&curr, philo->sim_start))
+			break;
+	}
+	while (!*philo->sim_finished)
 	{
 		if (think(philo))
 			break ;
@@ -45,35 +53,24 @@ static bool	think(t_philo *philo)
 		if (busy_sleep(philo, &philo->args->time_to_eat))
 			return (true);
 	}
-	while (grabbing_fork(philo, 0))
-		if (check_dead(philo))
-			return (true);
+	while (grabbing_fork(philo, 0)&&!*philo->sim_finished)
+		usleep(USLEEP_TIME);
 	if (print_status(philo, TAKEN_FORK))
-		return (true);
-	while (grabbing_fork(philo, 1))
-		if (check_dead(philo))
-			return (true);
+		return (release_fork(philo, 0), true);
+	while (grabbing_fork(philo, 1)&&!*philo->sim_finished)
+		usleep(USLEEP_TIME);
 	if (print_status(philo, TAKEN_FORK))
-		return (true);
+		return (release_fork(philo, 0), release_fork(philo, 1), true);
 	return (false);
 }
 
 static bool	eat(t_philo *philo)
 {
 	if (print_status(philo, EATING))
-		return (true);
-	if (philo->eat_count == philo->args->number_of_eat_to_finish)
-	{
-		pthread_mutex_lock(philo->finish);
-		*philo->eat_enough_count += 1;
-		if (*philo->eat_enough_count == philo->args->number_of_philos
-			&& !*philo->sim_finished)
-			*philo->sim_finished = 1;
-		pthread_mutex_unlock(philo->finish);
-	}
+		return (release_fork(philo, 0), release_fork(philo, 1), true);
 	if (busy_sleep(philo, &philo->args->time_to_eat))
-		return (true);
-	return (release_fork(philo, 0), release_fork(philo, 1), 0);
+		return (release_fork(philo, 0), release_fork(philo, 1), true);
+	return (release_fork(philo, 0), release_fork(philo, 1), false);
 }
 
 static bool	grabbing_fork(t_philo *philo, int num)

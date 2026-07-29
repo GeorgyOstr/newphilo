@@ -22,7 +22,6 @@ SRCS := main.c \
 	minift.c \
 	routines.c \
 	busy_sleep.c \
-	check_dead.c \
 	print_status.c \
 	time.c
 	

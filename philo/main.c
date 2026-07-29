@@ -119,6 +119,9 @@ static void	initialize_philo(t_philo *philo, t_sim *sim, unsigned int num)
 	philo->forks_locks[0] = &sim->forks_locks[num];
 	philo->forks_locks[1] = &sim->forks_locks[(num + 1)
 		% sim->args.number_of_philos];
+	philo->error = &sim->error;
+	philo->death_time.tv_sec = sim->args.time_to_die.tv_sec;
+	philo->death_time.tv_usec = sim->args.time_to_die.tv_usec;
 	if (num % 2 == 1)
 	{
 		philo->forks_states[1] = &sim->forks_states[num];
