@@ -27,10 +27,10 @@ bool	print_status(t_philo *philo, enum e_status stat)
 	if (time_more_eq(&curr, &philo->death_time))
 	{	
 		*philo->sim_finished = true;
-		printf("%ld.%06ld %u has died\n", curr.tv_sec, curr.tv_usec, philo->philo_num);
+		printf("%ld%03ld %u died\n", curr.tv_sec, curr.tv_usec/1000, philo->philo_num);
 		return (pthread_mutex_unlock(philo->write), pthread_mutex_unlock(philo->finish), false);
 	}
-	printf("%ld.%06ld %u ", curr.tv_sec, curr.tv_usec, philo->philo_num);
+	printf("%ld%03ld %u ", curr.tv_sec, curr.tv_usec/1000, philo->philo_num);
 	if (stat == SLEEPING)
 		printf("is sleeping");
 	else if (stat == EATING)

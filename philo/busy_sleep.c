@@ -20,12 +20,12 @@ bool	busy_sleep(t_philo *philo, struct timeval *duration)
 	if (gettimeofday(&end, NULL) || !time_sub(&end, philo->sim_start))
 		return (*philo->error = GETTIME_ERROR, true);
 	time_add(&end, duration);
-	while (!*philo->sim_finished)
+	while (1)
 	{
 		if (gettimeofday(&curr, NULL) || !time_sub(&curr, philo->sim_start))
 			return (*philo->error = GETTIME_ERROR, true);
 		if (time_more_eq(&curr, &philo->death_time))
-			return (true);
+			return (print_status(philo, DIED), true);
 		if (time_more_eq(&curr, &end))
 			return (false);
 		usleep(USLEEP_TIME);

@@ -27,6 +27,7 @@ void	start(t_sim *sim)
 static void	threads(t_sim *sim)
 {
 	unsigned int	i;
+	unsigned int	cnt;
 
 	i = 0;
 	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
@@ -43,8 +44,9 @@ static void	threads(t_sim *sim)
 		}
 		i++;
 	}
+	cnt = i;
 	i = 0;
-	while (i < sim->args.number_of_philos)
+	while (i < cnt)
 	{
 		if (pthread_join(sim->philos[i++].thread_id, NULL))
 		{

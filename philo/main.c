@@ -88,11 +88,12 @@ static enum e_errors	initialize_locks(t_sim *sim)
 	while (i < sim->args.number_of_philos)
 	{
 		if (pthread_mutex_init(&sim->forks_locks[i], NULL))
-		{
-			if (i != 0)
-				pthread_mutex_destroy(&sim->forks_locks[0]);
-			while (i > 0)
-				pthread_mutex_destroy(&sim->forks_locks[i--]);
+		{	
+			if (i == 0)
+				break;
+			pthread_mutex_destroy(&sim->forks_locks[0]);
+			while (--i > 0)
+				pthread_mutex_destroy(&sim->forks_locks[i]);
 			return (pthread_mutex_destroy(sim->write),
 				pthread_mutex_destroy(sim->finish),
 				sim->error = MUTEX_INIT_ERROR);

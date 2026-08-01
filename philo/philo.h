@@ -39,7 +39,8 @@ enum				e_status
 	TAKEN_FORK,
 	EATING,
 	SLEEPING,
-	THINKING
+	THINKING,
+	DIED
 };
 
 typedef struct s_args
@@ -93,7 +94,7 @@ void				*philo_routine(void *arg);
 bool				print_status(t_philo *philo, enum e_status stat);
 struct timeval		*time_add(struct timeval *t1, struct timeval *t2);
 struct timeval		*time_sub(struct timeval *t1, struct timeval *t2);
-
+bool				check_dead(t_philo *philo);
 void				unsigned_to_time(struct timeval *t, unsigned int v);
 void				time_copy(struct timeval *t1, struct timeval *t2);
 bool				time_more_eq(struct timeval *m, struct timeval *l);

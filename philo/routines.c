@@ -23,14 +23,15 @@ void	*philo_routine(void *arg)
 	struct timeval	curr;
 
 	philo = (t_philo *)arg;
-	while(!*philo->sim_finished)
+	while(1)
 	{
 		if (gettimeofday(&curr, NULL))
 			return (*philo->error = GETTIME_ERROR, arg);
 		if (time_more_eq(&curr, philo->sim_start))
 			break;
+		usleep(USLEEP_TIME);
 	}
-	while (!*philo->sim_finished)
+	while (1)
 	{
 		if (think(philo))
 			break ;
@@ -53,12 +54,20 @@ static bool	think(t_philo *philo)
 		if (busy_sleep(philo, &philo->args->time_to_eat))
 			return (true);
 	}
-	while (grabbing_fork(philo, 0)&&!*philo->sim_finished)
+	while (grabbing_fork(philo, 0))
+	{
+		if (check_dead(philo))
+			return (release_fork(philo, 0), true);
 		usleep(USLEEP_TIME);
+	}
 	if (print_status(philo, TAKEN_FORK))
 		return (release_fork(philo, 0), true);
-	while (grabbing_fork(philo, 1)&&!*philo->sim_finished)
+	while (grabbing_fork(philo, 1))
+	{
+		if (check_dead(philo))
+			return (release_fork(philo, 0), release_fork(philo, 1), true);
 		usleep(USLEEP_TIME);
+	}
 	if (print_status(philo, TAKEN_FORK))
 		return (release_fork(philo, 0), release_fork(philo, 1), true);
 	return (false);

@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readarg.c                                          :+:      :+:    :+:   */
+/*   check_dead.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gostroum <gostroum@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/20 22:38:18 by gostroum          #+#    #+#             */
-/*   Updated: 2026/07/20 22:38:19 by gostroum         ###   ########.fr       */
+/*   Created: 2026/07/20 22:38:57 by gostroum          #+#    #+#             */
+/*   Updated: 2026/07/20 22:38:58 by gostroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	readarg(char *s, unsigned int *arg)
+bool	check_dead(t_philo *philo)
 {
-	unsigned int	i;
+	struct timeval	curr;
 
-	i = 0;
-	*arg = 0;
-	while (s[i])
+	if (gettimeofday(&curr, NULL)|| !time_sub(&curr,philo->sim_start))
 	{
-		if (!('0' <= s[i] && s[i] <= '9') || UINT_MAX / 10 < *arg
-			|| (UINT_MAX / 10 == *arg && UINT_MAX % 10 < (unsigned int)(s[i] - '0')))
-			return (true);
-		*arg *= 10;
-		*arg += (unsigned int)(s[i] - '0');
-		i++;
-	}
-	if (*arg == 0)
+		pthread_mutex_lock(philo->finish);
+		*philo->error = GETTIME_ERROR;
+		*philo->sim_finished = true;
+		pthread_mutex_unlock(philo->finish);		
 		return (true);
+	}
+	if (time_more_eq(&curr, &philo->death_time))
+		return (print_status(philo, DIED), true);
 	return (false);
 }
