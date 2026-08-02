@@ -14,6 +14,7 @@
 
 static bool	print_death(t_philo *philo, struct timeval *curr);
 static void	print_eating(t_philo *philo, struct timeval *curr);
+static bool	get_relative_time_mutexed(t_philo *philo, struct timeval *curr);
 
 bool	print_status(t_philo *philo, enum e_status stat)
 {
@@ -22,9 +23,8 @@ bool	print_status(t_philo *philo, enum e_status stat)
 	pthread_mutex_lock(philo->finish);
 	if (*philo->sim_finished)
 		return (pthread_mutex_unlock(philo->finish), true);
-	pthread_mutex_unlock(philo->finish);
-	if (get_relative_time(philo, &curr) || print_death(philo, &curr))
-		return (true);
+	if (get_relative_time_mutexed(philo, &curr) || print_death(philo, &curr))
+		return (pthread_mutex_unlock(philo->finish), true);
 	pthread_mutex_lock(philo->write);
 	if (curr.tv_sec == 0)
 		printf("%ld %u ", curr.tv_usec / 1000, philo->philo_num);
@@ -41,6 +41,7 @@ bool	print_status(t_philo *philo, enum e_status stat)
 		printf("has taken a fork");
 	printf("\n");
 	pthread_mutex_unlock(philo->write);
+	pthread_mutex_unlock(philo->finish);
 	return (false);
 }
 
@@ -48,8 +49,7 @@ static bool	print_death(t_philo *philo, struct timeval *curr)
 {
 	if (time_more_eq(curr, &philo->death_time))
 	{
-		pthread_mutex_lock(philo->finish);
-		if (*philo->sim_finished)
+		if (!*philo->sim_finished)
 		{
 			pthread_mutex_lock(philo->write);
 			if (curr->tv_sec == 0)
@@ -72,11 +72,20 @@ static void	print_eating(t_philo *philo, struct timeval *curr)
 	time_add(&philo->death_time, &philo->args->time_to_die);
 	if (philo->eat_count == philo->args->number_of_eat_to_finish)
 	{
-		pthread_mutex_lock(philo->finish);
 		*philo->eat_enough_count += 1;
 		if (*philo->eat_enough_count == philo->args->number_of_philos)
 			*philo->sim_finished = true;
-		pthread_mutex_unlock(philo->finish);
 	}
 	printf("is eating");
+}
+
+static bool	get_relative_time_mutexed(t_philo *philo, struct timeval *curr)
+{
+	if (gettimeofday(curr, NULL) || !time_sub(curr, philo->sim_start))
+	{
+		*philo->sim_finished = true;
+		*philo->error = GETTIME_ERROR;
+		return (true);
+	}
+	return (false);
 }
