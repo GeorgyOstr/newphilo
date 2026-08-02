@@ -65,7 +65,7 @@ static enum e_errors	initialize(t_sim *sim)
 	}
 	if (initialize_locks(sim))
 		return (free(sim->philos), free(sim->forks_locks),
-			free(sim->forks_states), sim->error = MALLOC_ERROR);
+			free(sim->forks_states), sim->error = MUTEX_INIT_ERROR);
 	i = 0;
 	while (i < sim->args.number_of_philos)
 	{

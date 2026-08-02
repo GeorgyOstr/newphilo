@@ -28,7 +28,6 @@ SRCS := main.c \
 	get_time.c \
 	think_odd_even.c \
 	time.c
-	
 
 OBJS := $(SRCS:.c=.o)
 DEPS := $(OBJS:.o=.d)

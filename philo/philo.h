@@ -31,7 +31,8 @@ enum				e_errors
 	MALLOC_ERROR,
 	MUTEX_INIT_ERROR,
 	THREAD_ERROR,
-	GETTIME_ERROR
+	GETTIME_ERROR,
+	TIMEADD_ERROR
 };
 
 enum				e_status
@@ -90,7 +91,7 @@ void				start(t_sim *sim);
 void				clean(t_sim *sim);
 void				*philo_routine(void *arg);
 bool				print_status(t_philo *philo, enum e_status stat);
-struct timeval		*time_add(struct timeval *t1, struct timeval *t2);
+bool				time_add(struct timeval *t1, struct timeval *t2);
 struct timeval		*time_sub(struct timeval *t1, struct timeval *t2);
 bool				check_dead(t_philo *philo);
 void				time_copy(struct timeval *t1, struct timeval *t2);

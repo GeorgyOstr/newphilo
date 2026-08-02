@@ -13,7 +13,7 @@
 #include "philo.h"
 
 static bool	print_death(t_philo *philo, struct timeval *curr);
-static void	print_eating(t_philo *philo, struct timeval *curr);
+static bool	print_eating(t_philo *philo, struct timeval *curr);
 static bool	get_relative_time_mutexed(t_philo *philo, struct timeval *curr);
 
 bool	print_status(t_philo *philo, enum e_status stat)
@@ -61,11 +61,12 @@ static bool	print_death(t_philo *philo, struct timeval *curr)
 	return (false);
 }
 
-static void	print_eating(t_philo *philo, struct timeval *curr)
+static bool	print_eating(t_philo *philo, struct timeval *curr)
 {
 	philo->eat_count += 1;
 	time_copy(&philo->death_time, curr);
-	time_add(&philo->death_time, &philo->args->time_to_die);
+	if (time_add(&philo->death_time, &philo->args->time_to_die))
+		return (*philo->error = TIMEADD_ERROR, true);
 	if (philo->eat_count == philo->args->number_of_eat_to_finish)
 	{
 		*philo->eat_enough_count += 1;
@@ -73,6 +74,7 @@ static void	print_eating(t_philo *philo, struct timeval *curr)
 			*philo->sim_finished = true;
 	}
 	printf("is eating");
+	return (false);
 }
 
 static bool	get_relative_time_mutexed(t_philo *philo, struct timeval *curr)

@@ -12,13 +12,18 @@
 
 #include "philo.h"
 
-// Not handling overflow
-struct timeval	*time_add(struct timeval *t1, struct timeval *t2)
+bool	time_add(struct timeval *t1, struct timeval *t2)
 {
+	if (UINT_MAX - (unsigned)t1->tv_sec < (unsigned)t2->tv_sec)
+	{
+		t1->tv_sec = 0;
+		t1->tv_usec = 0;
+		return (true);
+	}
 	t1->tv_sec = (unsigned)t1->tv_sec + (unsigned)t2->tv_sec
 		+ ((unsigned)t1->tv_usec + (unsigned)t2->tv_usec) / 1000000;
 	t1->tv_usec = ((unsigned)t1->tv_usec + (unsigned)t2->tv_usec) % 1000000;
-	return (t1);
+	return (false);
 }
 
 struct timeval	*time_sub(struct timeval *t1, struct timeval *t2)

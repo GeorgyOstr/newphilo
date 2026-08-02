@@ -21,7 +21,11 @@ void	start(t_sim *sim)
 		sim->error = GETTIME_ERROR;
 		return ;
 	}
-	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
+	if (time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY}))
+	{
+		set_error(sim, TIMEADD_ERROR);
+		return ;
+	}
 	threads(sim);
 }
 
@@ -46,9 +50,6 @@ static void	threads(t_sim *sim)
 	while (i < cnt)
 	{
 		if (pthread_join(sim->philos[i++].thread_id, NULL))
-		{
 			set_error(sim, THREAD_ERROR);
-			break ;
-		}
 	}
 }
