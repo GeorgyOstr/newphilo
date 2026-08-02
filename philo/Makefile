@@ -26,6 +26,7 @@ SRCS := main.c \
 	check_dead.c \
 	set_error.c \
 	get_time.c \
+	think_odd_even.c \
 	time.c
 	
 

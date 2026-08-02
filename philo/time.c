@@ -37,12 +37,6 @@ struct timeval	*time_sub(struct timeval *t1, struct timeval *t2)
 	return (t1);
 }
 
-void	unsigned_to_time(struct timeval *t, unsigned int v)
-{
-	t->tv_sec = v / 1000;
-	t->tv_usec = (v % 1000) * 1000;
-}
-
 void	time_copy(struct timeval *t1, struct timeval *t2)
 {
 	t1->tv_sec = t2->tv_sec;
@@ -56,6 +50,17 @@ bool	time_more_eq(struct timeval *m, struct timeval *l)
 	else if (m->tv_sec < l->tv_sec)
 		return (false);
 	if (m->tv_usec >= l->tv_usec)
+		return (true);
+	return (false);
+}
+
+bool	time_more(struct timeval *m, struct timeval *l)
+{
+	if (m->tv_sec > l->tv_sec)
+		return (true);
+	else if (m->tv_sec < l->tv_sec)
+		return (false);
+	if (m->tv_usec > l->tv_usec)
 		return (true);
 	return (false);
 }

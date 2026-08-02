@@ -12,6 +12,8 @@
 
 #include "philo.h"
 
+static void	unsigned_to_time(struct timeval *t, unsigned int v);
+
 bool	readtime(char *s, struct timeval *arg)
 {
 	unsigned int	val;
@@ -20,4 +22,10 @@ bool	readtime(char *s, struct timeval *arg)
 		return (true);
 	unsigned_to_time(arg, val);
 	return (false);
+}
+
+static void	unsigned_to_time(struct timeval *t, unsigned int v)
+{
+	t->tv_sec = v / 1000;
+	t->tv_usec = (v % 1000) * 1000;
 }

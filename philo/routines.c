@@ -49,11 +49,8 @@ static bool	think(t_philo *philo)
 {
 	if (print_status(philo, THINKING))
 		return (true);
-	if (philo->philo_num % 2 == 0 && philo->eat_count == 0)
-	{
-		if (sleep_time(philo, &philo->args->time_to_eat))
-			return (true);
-	}
+	if (think_odd_even(philo))
+		return (true);
 	while (grabbing_fork(philo, 0))
 	{
 		if (check_dead(philo))
