@@ -21,20 +21,20 @@ static void				initialize_philo(t_philo *philo, t_sim *sim,
 int	main(int argc, char **argv)
 {
 	t_sim			sim;
-	pthread_mutex_t	write;
 	pthread_mutex_t	finish;
 
 	ft_bzero(&sim, sizeof(sim));
-	sim.write = &write;
 	sim.finish = &finish;
 	if (argc != 5 && argc != 6)
-		return (ARGUMENTS_ERROR);
+		return (printf("Error %i\n", sim.error), ARGUMENTS_ERROR);
 	if (parse_input(argc, argv, &sim))
-		return (sim.error);
+		return (printf("Error %i\n", sim.error), sim.error);
 	if (initialize(&sim))
-		return (sim.error);
+		return (printf("Error %i\n", sim.error), sim.error);
 	start(&sim);
 	clean(&sim);
+	if (sim.error)
+		printf("Error %i\n", sim.error);
 	return (sim.error);
 }
 
@@ -79,11 +79,8 @@ static enum e_errors	initialize_locks(t_sim *sim)
 {
 	unsigned int	i;
 
-	if (pthread_mutex_init(sim->write, NULL))
-		return (sim->error = MUTEX_INIT_ERROR);
 	if (pthread_mutex_init(sim->finish, NULL))
-		return (pthread_mutex_destroy(sim->write),
-			sim->error = MUTEX_INIT_ERROR);
+		return (sim->error = MUTEX_INIT_ERROR);
 	i = 0;
 	while (i < sim->args.number_of_philos)
 	{
@@ -91,8 +88,7 @@ static enum e_errors	initialize_locks(t_sim *sim)
 		{
 			while (i > 0)
 				pthread_mutex_destroy(&sim->forks_locks[--i]);
-			return (pthread_mutex_destroy(sim->write),
-				pthread_mutex_destroy(sim->finish),
+			return (pthread_mutex_destroy(sim->finish),
 				sim->error = MUTEX_INIT_ERROR);
 		}
 		i++;
@@ -106,7 +102,6 @@ static void	initialize_philo(t_philo *philo, t_sim *sim, unsigned int num)
 	philo->args = &sim->args;
 	philo->eat_enough_count = &sim->eat_enough_count;
 	philo->finish = sim->finish;
-	philo->write = sim->write;
 	philo->philo_num = num + 1;
 	philo->sim_finished = &sim->sim_finished;
 	philo->sim_start = &sim->sim_start;

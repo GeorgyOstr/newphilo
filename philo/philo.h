@@ -56,7 +56,6 @@ typedef struct s_philo
 {
 	pthread_t		thread_id;
 	pthread_mutex_t	*forks_locks[2];
-	pthread_mutex_t	*write;
 	pthread_mutex_t	*finish;
 	t_args			*args;
 	bool			*forks_states[2];
@@ -73,7 +72,6 @@ typedef struct s_sim
 {
 	t_philo			*philos;
 	pthread_mutex_t	*forks_locks;
-	pthread_mutex_t	*write;
 	pthread_mutex_t	*finish;
 	bool			*forks_states;
 	bool			sim_finished;

@@ -25,7 +25,6 @@ bool	print_status(t_philo *philo, enum e_status stat)
 		return (pthread_mutex_unlock(philo->finish), true);
 	if (get_relative_time_mutexed(philo, &curr) || print_death(philo, &curr))
 		return (pthread_mutex_unlock(philo->finish), true);
-	pthread_mutex_lock(philo->write);
 	if (curr.tv_sec == 0)
 		printf("%ld %u ", curr.tv_usec / 1000, philo->philo_num);
 	else
@@ -40,7 +39,6 @@ bool	print_status(t_philo *philo, enum e_status stat)
 	else if (stat == TAKEN_FORK)
 		printf("has taken a fork");
 	printf("\n");
-	pthread_mutex_unlock(philo->write);
 	pthread_mutex_unlock(philo->finish);
 	return (false);
 }
@@ -51,13 +49,11 @@ static bool	print_death(t_philo *philo, struct timeval *curr)
 	{
 		if (!*philo->sim_finished)
 		{
-			pthread_mutex_lock(philo->write);
 			if (curr->tv_sec == 0)
 				printf("%ld %u died\n", curr->tv_usec / 1000, philo->philo_num);
 			else
 				printf("%ld%03ld %u died\n", curr->tv_sec, curr->tv_usec / 1000,
 					philo->philo_num);
-			pthread_mutex_unlock(philo->write);
 		}
 		*philo->sim_finished = true;
 		return (true);
