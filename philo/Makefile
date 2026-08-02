@@ -6,13 +6,13 @@
 #    By: gostroum <gostroum@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/16 23:27:59 by gostroum          #+#    #+#              #
-#    Updated: 2026/06/26 23:23:44 by gostroum         ###   ########.fr        #
+#    Updated: 2026/08/02 21:23:03 by gostroum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 
-CC := cc
+CC := cc -pthread
 CFLAGS := -Wall -Wextra -Werror -Wconversion -Wpedantic
 SRCS := main.c \
 	clean.c \
