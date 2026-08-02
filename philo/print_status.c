@@ -21,9 +21,8 @@ bool	print_status(t_philo *philo, enum e_status stat)
 		return (pthread_mutex_unlock(philo->finish), false);
 	pthread_mutex_lock(philo->write);
 	if (gettimeofday(&curr, NULL) || !time_sub(&curr, philo->sim_start))
-		return (pthread_mutex_unlock(philo->write),
-			pthread_mutex_unlock(philo->finish), *philo->sim_finished = true,
-			*philo->error = GETTIME_ERROR, true);
+		return (pthread_mutex_unlock(philo->write), *philo->sim_finished = true, *philo->error = GETTIME_ERROR, pthread_mutex_unlock(philo->finish),
+			 true);
 	if (time_more_eq(&curr, &philo->death_time))
 	{	
 		*philo->sim_finished = true;

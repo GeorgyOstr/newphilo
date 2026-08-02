@@ -28,6 +28,10 @@ bool	busy_sleep(t_philo *philo, struct timeval *duration)
 			return (print_status(philo, DIED), true);
 		if (time_more_eq(&curr, &end))
 			return (false);
+		pthread_mutex_lock(philo->finish);
+		if (*philo->sim_finished)
+			return (pthread_mutex_unlock(philo->finish), true);
+		pthread_mutex_unlock(philo->finish);
 		usleep(USLEEP_TIME);
 	}
 	return (false);

@@ -24,6 +24,10 @@ bool	check_dead(t_philo *philo)
 		pthread_mutex_unlock(philo->finish);		
 		return (true);
 	}
+	pthread_mutex_lock(philo->finish);
+	if (*philo->sim_finished)
+		return (pthread_mutex_unlock(philo->finish), true);
+	pthread_mutex_unlock(philo->finish);
 	if (time_more_eq(&curr, &philo->death_time))
 		return (print_status(philo, DIED), true);
 	return (false);

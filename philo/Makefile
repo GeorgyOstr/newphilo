@@ -41,6 +41,8 @@ $(NAME): $(OBJS)
 clean:
 	rm -f $(OBJS) $(DEPS)
 
+nice: all clean
+
 fclean: clean
 	rm -f $(NAME)
 
