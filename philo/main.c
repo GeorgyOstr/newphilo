@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 	ft_bzero(&sim, sizeof(sim));
 	sim.finish = &finish;
 	if (argc != 5 && argc != 6)
-		return (printf("Error %i\n", sim.error), ARGUMENTS_ERROR);
+		return (printf("Error %i\n", ARGUMENTS_ERROR), ARGUMENTS_ERROR);
 	if (parse_input(argc, argv, &sim))
 		return (printf("Error %i\n", sim.error), sim.error);
 	if (initialize(&sim))

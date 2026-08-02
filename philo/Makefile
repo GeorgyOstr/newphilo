@@ -6,14 +6,14 @@
 #    By: gostroum <gostroum@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/16 23:27:59 by gostroum          #+#    #+#              #
-#    Updated: 2026/08/02 21:23:03 by gostroum         ###   ########.fr        #
+#    Updated: 2026/08/02 21:54:24 by gostroum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philo
 
-CC := cc -pthread
-CFLAGS := -Wall -Wextra -Werror -Wconversion -Wpedantic
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -Wconversion -Wpedantic -pthread
 SRCS := main.c \
 	clean.c \
 	readarg.c \
