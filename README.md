@@ -38,6 +38,10 @@ Example:
   - Updating README
 
 ## Memo:
+- fixed usleep time and fixed sim delay
+- non monotonic time, retaking actual death time after detection
+- bad protection on time_add overflow
+- calloc weird
 - Can't do anything against join fail
 - Not handling mutex_destroy fail (still locked, probably join also fail or something terrible)
 - All the args assumed to be positive int

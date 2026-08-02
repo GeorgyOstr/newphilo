@@ -13,7 +13,7 @@
 #include "philo.h"
 
 static void	halftime(struct timeval *t, struct timeval *original);
-static bool	think_odd(t_philo *philo);
+static bool	think_odd(t_philo *philo, struct timeval *h);
 
 bool	think_odd_even(t_philo *philo)
 {
@@ -26,7 +26,7 @@ bool	think_odd_even(t_philo *philo)
 			return (true);
 	}
 	if (philo->args->number_of_philos % 2 == 1)
-		if (think_odd(philo))
+		if (think_odd(philo, &h))
 			return (true);
 	return (false);
 }
@@ -39,19 +39,17 @@ static void	halftime(struct timeval *t, struct timeval *original)
 		t->tv_usec += (unsigned)500000;
 }
 
-static bool	think_odd(t_philo *philo)
+static bool	think_odd(t_philo *philo, struct timeval *h)
 {
-	struct timeval	h;
 	struct timeval	half_sleep;
 	struct timeval	val;
 
-	halftime(&h, &philo->args->time_to_eat);
 	halftime(&half_sleep, &philo->args->time_to_sleep);
 	time_copy(&val, &philo->args->time_to_eat);
 	if (philo->philo_num == philo->args->number_of_philos
 		&& philo->eat_count == 0)
 	{
-		if (sleep_time(philo, &h) || sleep_time(philo,
+		if (sleep_time(philo, h) || sleep_time(philo,
 				&philo->args->time_to_eat))
 			return (true);
 	}
