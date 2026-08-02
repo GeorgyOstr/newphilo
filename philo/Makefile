@@ -23,7 +23,9 @@ SRCS := main.c \
 	routines.c \
 	busy_sleep.c \
 	print_status.c \
-	check_dead.c\
+	check_dead.c \
+	set_error.c \
+	get_time.c \
 	time.c
 	
 
@@ -40,8 +42,6 @@ $(NAME): $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(DEPS)
-
-nice: all clean
 
 fclean: clean
 	rm -f $(NAME)

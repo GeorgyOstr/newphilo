@@ -55,7 +55,7 @@ bool	time_more_eq(struct timeval *m, struct timeval *l)
 		return (true);
 	else if (m->tv_sec < l->tv_sec)
 		return (false);
-	if (m->tv_usec > l->tv_usec)
+	if (m->tv_usec >= l->tv_usec)
 		return (true);
 	return (false);
 }

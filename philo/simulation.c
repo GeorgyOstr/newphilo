@@ -13,7 +13,6 @@
 #include "philo.h"
 
 static void	threads(t_sim *sim);
-static void	error_finish(t_sim *sim);
 
 void	start(t_sim *sim)
 {
@@ -37,7 +36,7 @@ static void	threads(t_sim *sim)
 		if (pthread_create(&sim->philos[i].thread_id, NULL, &philo_routine,
 				&sim->philos[i]))
 		{
-			error_finish(sim);
+			set_error(sim, THREAD_ERROR);
 			break ;
 		}
 		i++;
@@ -48,16 +47,8 @@ static void	threads(t_sim *sim)
 	{
 		if (pthread_join(sim->philos[i++].thread_id, NULL))
 		{
-			error_finish(sim);
+			set_error(sim, THREAD_ERROR);
 			break ;
 		}
 	}
-}
-
-static void	error_finish(t_sim *sim)
-{
-	pthread_mutex_lock(sim->finish);
-	sim->sim_finished = true;
-	sim->error = THREAD_ERROR;
-	pthread_mutex_unlock(sim->finish);
 }

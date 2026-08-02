@@ -17,13 +17,13 @@ bool	busy_sleep(t_philo *philo, struct timeval *duration)
 	struct timeval	end;
 	struct timeval	curr;
 
-	if (gettimeofday(&end, NULL) || !time_sub(&end, philo->sim_start))
-		return (*philo->error = GETTIME_ERROR, true);
+	if (get_relative_time(philo, &end))
+		return (true);
 	time_add(&end, duration);
 	while (1)
 	{
-		if (gettimeofday(&curr, NULL) || !time_sub(&curr, philo->sim_start))
-			return (*philo->error = GETTIME_ERROR, true);
+		if (get_relative_time(philo, &curr))
+			return (true);
 		if (time_more_eq(&curr, &philo->death_time))
 			return (print_status(philo, DIED), true);
 		if (time_more_eq(&curr, &end))

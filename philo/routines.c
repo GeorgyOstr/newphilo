@@ -25,8 +25,8 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		if (gettimeofday(&curr, NULL))
-			return (*philo->error = GETTIME_ERROR, arg);
+		if (get_time(philo, &curr))
+			return (arg);
 		if (time_more_eq(&curr, philo->sim_start))
 			break ;
 		usleep(USLEEP_TIME);

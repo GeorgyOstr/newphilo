@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_dead.c                                       :+:      :+:    :+:   */
+/*   set_error.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gostroum <gostroum@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/20 22:38:57 by gostroum          #+#    #+#             */
-/*   Updated: 2026/07/20 22:38:58 by gostroum         ###   ########.fr       */
+/*   Created: 2026/08/02 15:27:19 by gostroum          #+#    #+#             */
+/*   Updated: 2026/08/02 15:27:20 by gostroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_dead(t_philo *philo)
+void	set_error(t_sim *sim, enum e_errors error)
 {
-	struct timeval	curr;
+	pthread_mutex_lock(sim->finish);
+	sim->sim_finished = true;
+	sim->error = error;
+	pthread_mutex_unlock(sim->finish);
+}
 
-	if (get_relative_time(philo, &curr))
-		return (true);
+void	philo_set_error(t_philo *philo, enum e_errors error)
+{
 	pthread_mutex_lock(philo->finish);
-	if (*philo->sim_finished)
-		return (pthread_mutex_unlock(philo->finish), true);
+	*philo->sim_finished = true;
+	*philo->error = error;
 	pthread_mutex_unlock(philo->finish);
-	if (time_more_eq(&curr, &philo->death_time))
-		return (print_status(philo, DIED), true);
-	return (false);
 }
