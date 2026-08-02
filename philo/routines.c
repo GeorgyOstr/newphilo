@@ -39,7 +39,7 @@ void	*philo_routine(void *arg)
 			break ;
 		if (print_status(philo, SLEEPING))
 			break ;
-		if (busy_sleep(philo, &philo->args->time_to_sleep))
+		if (sleep_time(philo, &philo->args->time_to_sleep))
 			break ;
 	}
 	return (arg);
@@ -51,7 +51,7 @@ static bool	think(t_philo *philo)
 		return (true);
 	if (philo->philo_num % 2 == 0 && philo->eat_count == 0)
 	{
-		if (busy_sleep(philo, &philo->args->time_to_eat))
+		if (sleep_time(philo, &philo->args->time_to_eat))
 			return (true);
 	}
 	while (grabbing_fork(philo, 0))
@@ -77,7 +77,7 @@ static bool	eat(t_philo *philo)
 {
 	if (print_status(philo, EATING))
 		return (release_fork(philo, 0), release_fork(philo, 1), true);
-	if (busy_sleep(philo, &philo->args->time_to_eat))
+	if (sleep_time(philo, &philo->args->time_to_eat))
 		return (release_fork(philo, 0), release_fork(philo, 1), true);
 	return (release_fork(philo, 0), release_fork(philo, 1), false);
 }

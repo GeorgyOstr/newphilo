@@ -21,7 +21,7 @@ SRCS := main.c \
 	simulation.c \
 	minift.c \
 	routines.c \
-	busy_sleep.c \
+	sleep_time.c \
 	print_status.c \
 	check_dead.c \
 	set_error.c \

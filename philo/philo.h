@@ -98,7 +98,7 @@ bool				check_dead(t_philo *philo);
 void				unsigned_to_time(struct timeval *t, unsigned int v);
 void				time_copy(struct timeval *t1, struct timeval *t2);
 bool				time_more_eq(struct timeval *m, struct timeval *l);
-bool				busy_sleep(t_philo *philo, struct timeval *duration);
+bool				sleep_time(t_philo *philo, struct timeval *duration);
 bool				get_time(t_philo *philo, struct timeval *curr);
 bool				get_relative_time(t_philo *philo, struct timeval *curr);
 void				set_error(t_sim *sim, enum e_errors error);

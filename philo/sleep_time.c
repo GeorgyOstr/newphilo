@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   busy_sleep.c                                       :+:      :+:    :+:   */
+/*   sleep_time.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gostroum <gostroum@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-bool	busy_sleep(t_philo *philo, struct timeval *duration)
+bool	sleep_time(t_philo *philo, struct timeval *duration)
 {
 	struct timeval	end;
 	struct timeval	curr;
