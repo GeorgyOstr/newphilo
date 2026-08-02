@@ -20,9 +20,7 @@ bool	sleep_time(t_philo *philo, struct timeval *duration)
 	if (get_relative_time(philo, &end))
 		return (true);
 	if (time_add(&end, duration))
-		return (pthread_mutex_lock(philo->finish),
-			*philo->error = TIMEADD_ERROR, pthread_mutex_unlock(philo->finish),
-			true);
+		return (philo_set_error(philo, TIMEADD_ERROR), true);
 	while (1)
 	{
 		if (get_relative_time(philo, &curr))

@@ -14,7 +14,9 @@
 
 bool	time_add(struct timeval *t1, struct timeval *t2)
 {
-	if (UINT_MAX - (unsigned)t1->tv_sec < (unsigned)t2->tv_sec)
+	if (UINT_MAX - (unsigned)t1->tv_sec < (unsigned)t2->tv_sec || (UINT_MAX
+			- (unsigned)t1->tv_sec == (unsigned)t2->tv_sec
+			&& ((unsigned)t1->tv_usec + (unsigned)t2->tv_usec) / 1000000 == 1))
 	{
 		t1->tv_sec = 0;
 		t1->tv_usec = 0;
