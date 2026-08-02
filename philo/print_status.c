@@ -21,15 +21,18 @@ bool	print_status(t_philo *philo, enum e_status stat)
 		return (pthread_mutex_unlock(philo->finish), false);
 	pthread_mutex_lock(philo->write);
 	if (gettimeofday(&curr, NULL) || !time_sub(&curr, philo->sim_start))
-		return (pthread_mutex_unlock(philo->write), *philo->sim_finished = true, *philo->error = GETTIME_ERROR, pthread_mutex_unlock(philo->finish),
-			 true);
+		return (pthread_mutex_unlock(philo->write), *philo->sim_finished = true,
+			*philo->error = GETTIME_ERROR, pthread_mutex_unlock(philo->finish),
+			true);
 	if (time_more_eq(&curr, &philo->death_time))
-	{	
+	{
 		*philo->sim_finished = true;
-		printf("%ld%03ld %u died\n", curr.tv_sec, curr.tv_usec/1000, philo->philo_num);
-		return (pthread_mutex_unlock(philo->write), pthread_mutex_unlock(philo->finish), false);
+		printf("%ld%03ld %u died\n", curr.tv_sec, curr.tv_usec / 1000,
+			philo->philo_num);
+		return (pthread_mutex_unlock(philo->write),
+			pthread_mutex_unlock(philo->finish), false);
 	}
-	printf("%ld%03ld %u ", curr.tv_sec, curr.tv_usec/1000, philo->philo_num);
+	printf("%ld%03ld %u ", curr.tv_sec, curr.tv_usec / 1000, philo->philo_num);
 	if (stat == SLEEPING)
 		printf("is sleeping");
 	else if (stat == EATING)
@@ -49,7 +52,6 @@ bool	print_status(t_philo *philo, enum e_status stat)
 		printf("is thinking");
 	else if (stat == TAKEN_FORK)
 		printf("has taken a fork");
-
 	printf("\n");
 	pthread_mutex_unlock(philo->write);
 	pthread_mutex_unlock(philo->finish);

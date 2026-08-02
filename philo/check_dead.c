@@ -16,12 +16,12 @@ bool	check_dead(t_philo *philo)
 {
 	struct timeval	curr;
 
-	if (gettimeofday(&curr, NULL)|| !time_sub(&curr,philo->sim_start))
+	if (gettimeofday(&curr, NULL) || !time_sub(&curr, philo->sim_start))
 	{
 		pthread_mutex_lock(philo->finish);
 		*philo->error = GETTIME_ERROR;
 		*philo->sim_finished = true;
-		pthread_mutex_unlock(philo->finish);		
+		pthread_mutex_unlock(philo->finish);
 		return (true);
 	}
 	pthread_mutex_lock(philo->finish);

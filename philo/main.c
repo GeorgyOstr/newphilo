@@ -20,9 +20,9 @@ static void				initialize_philo(t_philo *philo, t_sim *sim,
 
 int	main(int argc, char **argv)
 {
-	t_sim	sim;
+	t_sim			sim;
 	pthread_mutex_t	write;
-	pthread_mutex_t finish;
+	pthread_mutex_t	finish;
 
 	ft_bzero(&sim, sizeof(sim));
 	sim.write = &write;
@@ -88,7 +88,7 @@ static enum e_errors	initialize_locks(t_sim *sim)
 	while (i < sim->args.number_of_philos)
 	{
 		if (pthread_mutex_init(&sim->forks_locks[i], NULL))
-		{	
+		{
 			while (i > 0)
 				pthread_mutex_destroy(&sim->forks_locks[--i]);
 			return (pthread_mutex_destroy(sim->write),
@@ -102,31 +102,20 @@ static enum e_errors	initialize_locks(t_sim *sim)
 
 static void	initialize_philo(t_philo *philo, t_sim *sim, unsigned int num)
 {
+	ft_bzero(philo, sizeof(*philo));
 	philo->args = &sim->args;
-	philo->eat_count = 0;
 	philo->eat_enough_count = &sim->eat_enough_count;
 	philo->finish = sim->finish;
 	philo->write = sim->write;
 	philo->philo_num = num + 1;
 	philo->sim_finished = &sim->sim_finished;
 	philo->sim_start = &sim->sim_start;
-	philo->death_time = sim->sim_start;
-	philo->forks_states[0] = &sim->forks_states[num];
-	philo->forks_states[1] = &sim->forks_states[(num + 1)
-		% sim->args.number_of_philos];
-	philo->forks_locks[0] = &sim->forks_locks[num];
-	philo->forks_locks[1] = &sim->forks_locks[(num + 1)
-		% sim->args.number_of_philos];
+	philo->death_time = sim->args.time_to_die;
 	philo->error = &sim->error;
-	philo->death_time.tv_sec = sim->args.time_to_die.tv_sec;
-	philo->death_time.tv_usec = sim->args.time_to_die.tv_usec;
-	if (num % 2 == 1)
-	{
-		philo->forks_states[1] = &sim->forks_states[num];
-		philo->forks_states[0] = &sim->forks_states[(num + 1)
-			% sim->args.number_of_philos];
-		philo->forks_locks[1] = &sim->forks_locks[num];
-		philo->forks_locks[0] = &sim->forks_locks[(num + 1)
-			% sim->args.number_of_philos];
-	}
+	philo->forks_states[num % 2] = &sim->forks_states[num];
+	philo->forks_states[(num % 2 + 1) % 2] = &sim->forks_states[(num + 1)
+		% sim->args.number_of_philos];
+	philo->forks_locks[num % 2] = &sim->forks_locks[num];
+	philo->forks_locks[(num % 2 + 1) % 2] = &sim->forks_locks[(num + 1)
+		% sim->args.number_of_philos];
 }

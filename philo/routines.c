@@ -19,16 +19,16 @@ static void	release_fork(t_philo *philo, unsigned int num);
 
 void	*philo_routine(void *arg)
 {
-	t_philo	*philo;
+	t_philo			*philo;
 	struct timeval	curr;
 
 	philo = (t_philo *)arg;
-	while(1)
+	while (1)
 	{
 		if (gettimeofday(&curr, NULL))
 			return (*philo->error = GETTIME_ERROR, arg);
 		if (time_more_eq(&curr, philo->sim_start))
-			break;
+			break ;
 		usleep(USLEEP_TIME);
 	}
 	while (1)

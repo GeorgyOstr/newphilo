@@ -13,6 +13,7 @@
 #include "philo.h"
 
 static void	threads(t_sim *sim);
+static void	error_finish(t_sim *sim);
 
 void	start(t_sim *sim)
 {
@@ -21,6 +22,7 @@ void	start(t_sim *sim)
 		sim->error = GETTIME_ERROR;
 		return ;
 	}
+	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
 	threads(sim);
 }
 
@@ -30,16 +32,12 @@ static void	threads(t_sim *sim)
 	unsigned int	cnt;
 
 	i = 0;
-	time_add(&sim->sim_start, &(struct timeval){0, SIM_DELAY});
 	while (i < sim->args.number_of_philos)
 	{
 		if (pthread_create(&sim->philos[i].thread_id, NULL, &philo_routine,
 				&sim->philos[i]))
 		{
-			pthread_mutex_lock(sim->finish);
-			sim->sim_finished = true;
-			sim->error = THREAD_ERROR;
-			pthread_mutex_unlock(sim->finish);
+			error_finish(sim);
 			break ;
 		}
 		i++;
@@ -50,11 +48,16 @@ static void	threads(t_sim *sim)
 	{
 		if (pthread_join(sim->philos[i++].thread_id, NULL))
 		{
-			pthread_mutex_lock(sim->finish);
-			sim->sim_finished = true;
-			sim->error = THREAD_ERROR;
-			pthread_mutex_unlock(sim->finish);
+			error_finish(sim);
 			break ;
 		}
 	}
+}
+
+static void	error_finish(t_sim *sim)
+{
+	pthread_mutex_lock(sim->finish);
+	sim->sim_finished = true;
+	sim->error = THREAD_ERROR;
+	pthread_mutex_unlock(sim->finish);
 }
