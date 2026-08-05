@@ -32,7 +32,7 @@ Example:
 
 ## AI usage:
 - Copilot autocomplete - (quick code rewriting)
-- Codex 
+- Codex/Claude
   - context analysis, issues bullets list, (toying with fix all, but not using, just dump in ai slop branch for comparison)
   - Drafting a project Makefile
   - Updating README
@@ -45,6 +45,4 @@ Example:
 - Can't do anything against join fail
 - Not handling mutex_destroy fail (still locked, probably join also fail or something terrible)
 - All the args assumed to be positive int
-- Gettimeofday on system is stable and never errors
-- (2^32) milliseconds = 49.7102696 days
 - This programm not overflows for long time on systems with 32bit integers
