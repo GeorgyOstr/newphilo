@@ -1,7 +1,7 @@
 *This project has been created as part of the 42 curriculum by gostroum.*
 ## Description
 This project implements the classic Dining Philosophers concurrency problem.
-Check the subject.pdf in your intra.
+Check the subject.pdf in your intra (or I will provide you with the document on request).
 The goal is to synchronize multiple philosopher threads so they can think, eat,
 and sleep without starving or causing deadlocks, while respecting timing rules.
 
@@ -39,6 +39,7 @@ Example:
   - Updating README
 
 ## Memo:
+- All starts from thinking (can't all start from eating, and from sleeping doesn't make sense)
 - fixed usleep time and fixed sim delay
 - non monotonic time, retaking actual death time after detection
 - bad protection on time_add overflow
