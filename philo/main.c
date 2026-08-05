@@ -6,7 +6,7 @@
 /*   By: gostroum <gostroum@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 22:38:45 by gostroum          #+#    #+#             */
-/*   Updated: 2026/07/20 22:38:46 by gostroum         ###   ########.fr       */
+/*   Updated: 2026/08/05 19:14:42 by gostroum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ int	main(int argc, char **argv)
 	ft_bzero(&sim, sizeof(sim));
 	sim.finish = &finish;
 	if (argc != 5 && argc != 6)
-		return (printf("Error %i\n", ARGUMENTS_ERROR), ARGUMENTS_ERROR);
+		return (printf("Error %u\n", ARGUMENTS_ERROR), ARGUMENTS_ERROR);
 	if (parse_input(argc, argv, &sim))
-		return (printf("Error %i\n", sim.error), sim.error);
+		return (printf("Error %u\n", sim.error), (int)sim.error);
 	if (initialize(&sim))
-		return (printf("Error %i\n", sim.error), sim.error);
+		return (printf("Error %u\n", sim.error), (int)sim.error);
 	start(&sim);
 	clean(&sim);
 	if (sim.error)
-		printf("Error %i\n", sim.error);
-	return (sim.error);
+		printf("Error %u\n", (int)sim.error);
+	return ((int)sim.error);
 }
 
 static enum e_errors	parse_input(int argc, char **argv, t_sim *sim)
