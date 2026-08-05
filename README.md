@@ -31,7 +31,7 @@ Example:
 - https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3.html PTHREAD_MUTEX_INIT Always return 0
 - https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_mutexattr_destroy.html
 
-## AI usage:
+### AI usage:
 - Copilot autocomplete - (quick code rewriting)
 - Codex/Claude
   - context analysis, issues bullets list, (toying with fix all, but not using, just dump in ai slop branch for comparison)
@@ -39,7 +39,7 @@ Example:
   - Updating README
 
 ## Memo:
-- All starts from thinking (can't all start from eating, and from sleeping doesn't make sense)
+- All starts from thinking (can't start from eating, and from sleeping doesn't make sense, taking forks requires? thinking)
 - fixed usleep time and fixed sim delay
 - non monotonic time, retaking actual death time after detection
 - bad protection on time_add overflow
